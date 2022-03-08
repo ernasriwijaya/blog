@@ -129,9 +129,9 @@ return [
     |
     */
     'available_locales' => [
-        'English' => 'EN',
-        'Chinese' => 'CN',
-        'Bahasa Melayu' => 'BM',
+        'English' => 'en',
+        'Chinese' => 'cn',
+        'Bahasa Melayu' => 'bm',
     ],
 
     'key' => env('APP_KEY'),

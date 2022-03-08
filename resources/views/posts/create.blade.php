@@ -36,8 +36,8 @@
                     <input type="file" name="image" class="form-control">
                 </div>
                 <div class="mb-3">
-                <label for="cars">Status : </label>
-                    <select name="cars" id="cars">
+                <label for="status">Status : </label>
+                    <select name="status" id="status">
                     <option value="draft">Draft</option>
                     <option value="set to publish">Set To Publish</option>
                     </select>

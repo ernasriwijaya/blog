@@ -9,14 +9,14 @@ use App\Models\TransactionLog;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class NewTransactionNumber extends Command
+class NewPosts extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'NewTransactionNumber:cron';
+    protected $signature = 'NewPosts:cron';
 
     /**
      * The console command description.
@@ -43,18 +43,18 @@ class NewTransactionNumber extends Command
     public function handle()
     {
         $cronjob = CronJob::create([
-            'cron_job_name' => 'NewTransactionNumber:cron'
+            'cron_job_name' => 'NewPosts:cron'
         ]);
 
-        $select_query = "SELECT a.transaction_id, a.user_id, a.transaction_number
-        FROM tbl_transaction a
-        JOIN (SELECT transaction_number, COUNT(*) as total
-        FROM tbl_transaction 
-        where transaction_status_id NOT IN (1,4)
-        GROUP BY transaction_number
+        $select_query = "SELECT a.title, a.body, a.slug
+        FROM laravel a
+        JOIN (SELECT title, COUNT(*) as total
+        FROM laravel 
+        where id NOT IN (1,4)
+        GROUP BY title
         HAVING total > 1 ) b
-        ON a.transaction_number = b.transaction_number
-        ORDER BY a.transaction_number";
+        ON a.title = b.title
+        ORDER BY a.title";
     
         $transaction = DB::select($select_query);
 
@@ -62,20 +62,20 @@ class NewTransactionNumber extends Command
 
         foreach ($result as $key => $value) {
 
-            $old_transaction_number = $value->transaction_number;
-            $new_transaction_number = RunningNumber::get_running_no();
-            $action_log = "Cronjob Generate New Invoice";
+            $old_title = $value->title;
+            $new_title = RunningNumber::get_running_no();
+            $action_log = "Cronjob Generate New Posts";
 
             $value->update([
-                'transaction_number' => $new_transaction_number
+                'title' => $title
             ]);
 
             TransactionLog::insert([
-                'transaction_id' => $value->transaction_id,
-                'transaction_log_action' => $action_log,
-                'transaction_log_desc' => 'Generate new invoice number from #' . $old_transaction_number . ' to #' . $new_transaction_number,
-                'transaction_log_created' => now(),
-                'user_id' => 0
+                'id' => $value->id,
+                'title_action' => $action_log,
+                'title_desc' => 'Generate  #' . $old_title . ' to #' . $new_title,
+                'title_created' => now(),
+                'id' => 0
             ]);
         }
 

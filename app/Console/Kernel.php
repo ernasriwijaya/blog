@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('NewTransactionNumber:cron')->everyMinute();
+        $schedule->command('NewPosts:cron')->everyMinute();
     }
 
     /**

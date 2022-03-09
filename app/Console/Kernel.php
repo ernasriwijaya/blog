@@ -20,9 +20,7 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            DB::table('posts')->create('posts');
-        })->everyMinute();
+        $schedule->command('NewTransactionNumber:cron')->everyMinute();
     }
 
     /**
